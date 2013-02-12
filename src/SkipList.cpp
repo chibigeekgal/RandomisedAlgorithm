@@ -1,4 +1,5 @@
 #include "SkipList.hpp"
+#include <time.h>
 /***********************************************************/
 /********************** PROVIDED FUNCTIONS *****************/
 /***********************************************************/
@@ -97,10 +98,15 @@ void SkipList::dump(char sep) {
 /////////////////////////////////////////////////////////////
 
 unsigned int SkipList::randHeight() {
-    ////////////// Write your code below  ////////////////////////
+  int height;
 
-
-    return 0; //you have to replace this line with your own.
+  /* initialize random seed. */
+  srand(time(NULL));
+  
+  /* generate random height. */
+  height = rand() % (m_maxHeight + 1);
+  
+  return height;
 }
 
 
@@ -110,25 +116,42 @@ int SkipList::add(SkipListNode* target, SkipListNode* newNode, unsigned int leve
         countAdd++;
     }
     ////////////// Write your code below  ////////////////////////
-
-
-
-    return 0;  //you have to replace this line with your own.
+    SkipListNode *next = target->nextAtLevel(level);
+    if (target == newNode) {
+      return 0;
+    }
+    if (next == NULL || *next > *newNode) {
+      if (level < newNode->height()) {
+	newNode->setNextAtLevel(level, next);
+	target->setNextAtLevel(level, newNode);
+      }
+      if (level > 0) {
+	add(target, newNode, level - 1);
+      }
+      return 1;
+    } else {
+      return add(next, newNode, level);
+    }
 }
 
 /////////////////////////////////////////////////////////////
 /////////////////////  FIND FUNCTION ////////////////////////
 /////////////////////////////////////////////////////////////
 SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int level) {
-    if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
-        countFind++;
-    }
-    ////////////// Write your code below  ////////////////////////
-
-
-
-
+  if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
+    countFind++;
+  }
+  ////////////// Write your code below  ////////////////////////
+  if (*target == key) {
     return target;
+  }
+  SkipListNode *next = target->nextAtLevel(level);
+  if (next == NULL || *next > key) {
+    return find(target, key, level - 1);
+  } else {
+    return find(next, key, level);
+  }
+  return NULL;
 }
 
 
@@ -136,11 +159,21 @@ SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int 
 /////////////////////  DEL FUNCTION ////////////////////////
 /////////////////////////////////////////////////////////////
 SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int level) {
-    if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
-        countDelete++;
-    }
-    ////////////// Write your code below  ////////////////////////
-
-
-    return NULL; ///you have to replace this line with your own.
+  if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
+    countFind++;
+  }
+  ////////////// Write your code below  ////////////////////////
+  SkipListNode *next = target->nextAtLevel(level);
+  if (level < 0) {
+    return next;
+  }
+  if (*next == key) {
+    target->setNextAtLevel(level, next->nextAtLevel(level));
+    return del(target, key, level - 1);
+  }
+  if (next == NULL || *next > key) {
+    return del(target, key, level -1);
+  } else {
+    return del(next, key, level);
+  }
 }
