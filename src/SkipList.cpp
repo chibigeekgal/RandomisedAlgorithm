@@ -142,16 +142,16 @@ SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int 
     countFind++;
   }
   ////////////// Write your code below  ////////////////////////
-  if (*target == key) {
+  if (level < 0)
+    return NULL;
+  if (*target == key)
     return target;
-  }
   SkipListNode *next = target->nextAtLevel(level);
   if (next == NULL || *next > key) {
     return find(target, key, level - 1);
   } else {
     return find(next, key, level);
   }
-  return NULL;
 }
 
 
@@ -164,12 +164,13 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
   }
   ////////////// Write your code below  ////////////////////////
   SkipListNode *next = target->nextAtLevel(level);
-  if (level < 0) {
-    return next;
-  }
-  if (*next == key) {
+  if (next == NULL && level == 0) {
+    return NULL;
+  } else if (*next == key && level > 0) {
     target->setNextAtLevel(level, next->nextAtLevel(level));
     return del(target, key, level - 1);
+  } else if (*next == key && level == 0) {
+    return next;
   }
   if (next == NULL || *next > key) {
     return del(target, key, level -1);
