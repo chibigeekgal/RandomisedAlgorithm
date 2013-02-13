@@ -1,4 +1,6 @@
 #include "RBST.hpp"
+#include <time.h>
+#include <stdlib.h>
 /***********************************************************/
 /******************* PROVIDED FUNCTIONS ********************/
 /***********************************************************/
@@ -81,11 +83,14 @@ int RBST::dump(RBSTNode* target, char sep) {
 
 RBSTNode*  RBST::rightRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
-  /*  RBSTNode *left = left(target);
+  /* RBSTNode *left = left(target);
   target->setLeft(right(target));
   left->setRight(target);
   return left;*/
-  return target;
+  RBSTNode *left = target -> left();
+  left -> right() -> setLeft(target);
+  target -> setRight(left);
+  return left;
 };
 
 RBSTNode*  RBST::leftRotate(RBSTNode* target) {
@@ -93,44 +98,77 @@ RBSTNode*  RBST::leftRotate(RBSTNode* target) {
   /*  RBSTNode *right = right(target);
   target->setRight(left(right));
   right->setLeft(target);*/
-  return target;
+  //  return target;
+  RBSTNode *right = target -> right();
+  right -> left() -> setRight(target);
+  target -> setLeft(right);
+  return right;
 };
 
 RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
   countAdd++;
   ////////////// Write your code below  ////////////////////////
-  /* if (target == NULL)
-    return key;
+  if (target == NULL)
+    // return new RBSTNode(key);
+    return NULL;
   if (key < target->getKey()) {
     target->setLeft(addRoot(target->left(), key));
     return rightRotate(target);
   } else {
     target->setRight(addRoot(target->right(), key));
-    return leftRotate(target);*/
-  return target;
+    return leftRotate(target);
+  }
 };
 
 
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-
-
-    return target;
+    srand(time(NULL));
+    int r = rand() % (m_maxHeight) + 1;
+    if(r == 1) {
+      return addRoot(target, key);
+    } else {
+      return insert(target, key);
+    }
 };
 
+
+RBSTNode* insert(RBSTNode* target, const Key& key) {
+  if(target == NULL) {
+    // return new RBSTNode(key);
+    return NULL;
+  }
+  if(*target == key) {
+    return target;
+  }
+  
+  if(*target < key) {
+    return insert(target -> right(), key);
+   } else {
+    return insert(target -> left(), key);
+  }
+}
 
 /////////////////////////////////////////////////////////////
 /////////////////////  FIND FUNCTIONS ///////////////////////
 /////////////////////////////////////////////////////////////
 
 RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
-    countFind++;
-    ////////////// Write your code below  ////////////////////////
-
-
-
+  countFind++;
+  ////////////// Write your code below  ////////////////////////
+  if (target == NULL) {
+    return NULL;
+  }
+  if(*target == key ){
     return target;
+  }
+  
+  if(*target < key) {
+    return find (target -> right(), key);
+  } else {
+    return find (target -> left(), key);
+  }
 };
 
 
@@ -140,12 +178,12 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 
 
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
-    countDelete++;
-    ////////////// Write your code below  ////////////////////////
+  countDelete++;
+  ////////////// Write your code below  ////////////////////////
 
-
-
-
-    return target;
+  
+  
+  
+  return target;
 };
 
