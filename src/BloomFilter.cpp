@@ -1,4 +1,7 @@
 #include "BloomFilter.hpp"
+#include <iostream>
+
+using namespace std;
 const unsigned long BloomFilter::m_pocketSize = LONG_BIT;
 
 /***********************************************************/
@@ -80,10 +83,11 @@ void BloomFilter::dump() {
 void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
+    unsigned long f1 = hash1(key);
+    unsigned long f2 = hash2(key);
 
-
-
-
+    m_tickBook[f1/m_pockets] = 1;
+    m_tickBook[f2/m_pockets] = 1;
 }
 
 
@@ -96,8 +100,10 @@ bool BloomFilter::exist(const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
 
-
-    return false; //you have to replace this line with your own.
+    unsigned long f1 = hash1(key);
+    unsigned long f2 = hash2(key);
+    
+    return m_tickBook[f1/m_pockets] && m_tickBook[f2/m_pockets]; //you have to replace this line with your own.
 }
 
 
@@ -109,7 +115,9 @@ void BloomFilter::del(const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
 
-
+    unsigned long f1 = hash1(key);
+    unsigned long f2 = hash2(key);
+    
+    m_tickBook[f1/m_pockets] = 0;
+    m_tickBook[f2/m_pockets] = 0;
 }
-
-

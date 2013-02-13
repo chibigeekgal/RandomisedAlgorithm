@@ -108,9 +108,12 @@ RBSTNode*  RBST::leftRotate(RBSTNode* target) {
 RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
   countAdd++;
   ////////////// Write your code below  ////////////////////////
-  if (target == NULL)
-    // return new RBSTNode(key);
-    return NULL;
+  if (target == NULL) {
+    m_size++;
+    target = new RBSTNode(key);
+    return target;
+  }
+
   if (key < target->getKey()) {
     target->setLeft(addRoot(target->left(), key));
     return rightRotate(target);
@@ -125,30 +128,17 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
     srand(time(NULL));
-    int r = rand() % (m_maxHeight) + 1;
-    if(r == 1) {
+    int r = rand() % ((m_size) + 1);
+    if(r == 0) {
       return addRoot(target, key);
+    } 
+
+    if (*target < key) {
+      return addRoot(target -> right(), key);
     } else {
-      return insert(target, key);
+      return addRoot(target -> left(), key);
     }
 };
-
-
-RBSTNode* insert(RBSTNode* target, const Key& key) {
-  if(target == NULL) {
-    // return new RBSTNode(key);
-    return NULL;
-  }
-  if(*target == key) {
-    return target;
-  }
-  
-  if(*target < key) {
-    return insert(target -> right(), key);
-   } else {
-    return insert(target -> left(), key);
-  }
-}
 
 /////////////////////////////////////////////////////////////
 /////////////////////  FIND FUNCTIONS ///////////////////////
@@ -180,10 +170,28 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
   countDelete++;
   ////////////// Write your code below  ////////////////////////
+  
+  if (target == NULL) {
+    return NULL;
+  }
 
-  
-  
-  
-  return target;
+  if (*target == key) {
+    return deleteNode(target);
+  }
+
+  if (*target < key) {
+    RBSTNode* right = del(target -> right(), key);
+    target -> setRight(right);
+    return right;
+  } else {
+    RBSTNode* left = del(target -> left(), key);
+    target -> setLeft(left);
+    return left;
+  }  
 };
 
+RBSTNode* RBST:: deleteNode(RBSTNode* target, const Key& key) {
+  if(target == NULL) {
+    return NULL;
+  }
+}

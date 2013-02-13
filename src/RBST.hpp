@@ -67,19 +67,17 @@ public:
     int dump(RBSTNode* target, char sep);
 
 private:
-    RBSTNode* randomAdd(RBSTNode* target, const Key& key);
-    RBSTNode* addRoot(RBSTNode* target, const Key& key);
-    RBSTNode*  rightRotate(RBSTNode* target);
-    RBSTNode*  leftRotate(RBSTNode* target);
-
-    RBSTNode* del(RBSTNode* target, const Key& key);
-
-    RBSTNode* find(RBSTNode* target, const Key& key);
-
-    RBSTNode* m_head;
-    unsigned int m_size;
-
-
+  RBSTNode* randomAdd(RBSTNode* target, const Key& key);
+  RBSTNode* addRoot(RBSTNode* target, const Key& key);
+  RBSTNode*  rightRotate(RBSTNode* target);
+  RBSTNode*  leftRotate(RBSTNode* target);
+  
+  RBSTNode* del(RBSTNode* target, const Key& key);
+  
+  RBSTNode* find(RBSTNode* target, const Key& key);
+  
+  RBSTNode* m_head;
+  unsigned int m_size;
 };
 
 #endif /*RBST_HPP_*/
