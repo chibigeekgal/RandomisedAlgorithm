@@ -164,24 +164,25 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
     countFind++;
   }
   ////////////// Write your code below  ////////////////////////
-  /*if (target == NULL)
+  if (target == NULL)
     return NULL;
   SkipListNode *curr = target->nextAtLevel(level); 
-  if(*curr == key) {
-    target->setNextAtLevel(level, curr->nextAtLevel(level));
-    if (level == 0)
-      return curr;
-    return del(target, key, level - 1);
-    return curr;
-  }
   if(curr == NULL || key < *curr) {
     if (level == 0)
       return NULL;
     return del(target, key, level - 1);
   }
+
+  if(*curr == key) {
+    target->setNextAtLevel(level, curr->nextAtLevel(level));
+    if (level == 0)
+      return curr;
+    return del(target, key, level - 1);
+    //return curr;
+  }  
   return del(curr, key, level);
-  */
-  return target;
+  
+  //return target;
 
 
 
