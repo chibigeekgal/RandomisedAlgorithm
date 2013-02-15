@@ -13,7 +13,7 @@ using namespace std;
 class RBSTNode;
 class RBSTNode: public Key {
 public:
-  RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL) { height = 1; }
+  RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL) { size = 1; }
     virtual ~RBSTNode() {}
 
     string getKey() {
@@ -34,28 +34,28 @@ public:
 
     RBSTNode* setLeft (RBSTNode* left) {
         m_left = left;
-        recalculate_height(); 
+        recalculate_size(); 
         return this;
     }
     RBSTNode* setRight (RBSTNode* right) {
         m_right =right;
-        recalculate_height(); 
+        recalculate_size(); 
         return this;
     }
-  void recalculate_height () {
-    int left_height = m_left == NULL ? 0 : m_left->height;
-    int right_height = m_right == NULL ? 0 : m_right->height; 
-    height = 1 + max(left_height, right_height);
+  void recalculate_size () {
+    int left_size = m_left == NULL ? 0 : m_left->size;
+    int right_size = m_right == NULL ? 0 : m_right->size; 
+    size = 1 + left_size + right_size;
   }
-  int getHeight () {
-    return height; 
+  int getSize () {
+    return size; 
   }
   
 private:
     RBSTNode() {}
     RBSTNode* m_left;
     RBSTNode* m_right;
-    unsigned int height;
+    unsigned int size;
 };
 
 

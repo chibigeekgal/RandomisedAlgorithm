@@ -84,8 +84,7 @@ int RBST::dump(RBSTNode* target, char sep) {
 RBSTNode*  RBST::rightRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
   RBSTNode *left = target -> left();
-  RBSTNode *right_of_left = left->right();
-  target->setLeft(right_of_left);
+  target->setLeft(left->right());
   left->setRight(target);
   return left;
 };
@@ -93,8 +92,7 @@ RBSTNode*  RBST::rightRotate(RBSTNode* target) {
 RBSTNode*  RBST::leftRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
   RBSTNode *right = target -> right();
-  RBSTNode *left_of_right = right->left(); 
-  target->setRight(left_of_right);
+  target->setRight(right->left());
   right->setLeft(target);
   return right;
 };
@@ -104,8 +102,7 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
   ////////////// Write your code below  ////////////////////////
   if (target == NULL) {
     m_size++;
-    target = new RBSTNode(key);
-    return target;
+    return new RBSTNode(key);
   }
 
   if (key < target->getKey()) {
@@ -125,8 +122,7 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
       m_size++;
       return new RBSTNode(key);
     }
-    srand(time(NULL));
-    int r = rand() % (target->getHeight()) + 1;
+    int r = rand() % (target->getSize()) + 1;
     if (r == 1) {
       return addRoot(target, key);
     } 
@@ -145,6 +141,7 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
   countFind++;
   ////////////// Write your code below  ////////////////////////
+ 
   if (target == NULL) {
     return NULL;
   }
@@ -157,6 +154,7 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
   } else {
     return find (target -> left(), key);
   }
+  
 };
 
 
@@ -168,6 +166,7 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
   countDelete++;
   ////////////// Write your code below  ////////////////////////
+
   if (target == NULL) {
     return NULL;
   }
@@ -182,6 +181,7 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     target->setLeft(left);
   }  
   return target;
+  
 };
 
 
