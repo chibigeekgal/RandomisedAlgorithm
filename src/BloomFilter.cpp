@@ -83,11 +83,16 @@ void BloomFilter::dump() {
 void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-    unsigned long f1 = hash1(key);
-    unsigned long f2 = hash2(key);
-
-    m_tickBook[f1/m_pockets] = 1;
-    m_tickBook[f2/m_pockets] = 1;
+    unsigned long f1 = hash1(key) % m_length;
+    unsigned long f2 = hash2(key) % m_length;
+    unsigned long pocket_index1 = f1 / m_pocketSize;
+    unsigned long pocket_index2 = f2 / m_pocketSize;
+    unsigned long bit_index1 = f1 % m_pocketSize;
+    unsigned long bit_index2 = f2 % m_pocketSize;
+    m_tickBook[pocket_index1] = m_tickBook[pocket_index1] 
+      | (1 << bit_index1);
+    m_tickBook[pocket_index2] = m_tickBook[pocket_index2]
+      | (1 << bit_index2);
 }
 
 
@@ -99,11 +104,14 @@ void BloomFilter::add(const Key& key) {
 bool BloomFilter::exist(const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
-
-    unsigned long f1 = hash1(key);
-    unsigned long f2 = hash2(key);
-    
-    return m_tickBook[f1/m_pockets] && m_tickBook[f2/m_pockets]; //you have to replace this line with your own.
+    unsigned long f1 = hash1(key) % m_length;
+    unsigned long f2 = hash2(key) % m_length;
+    unsigned long pocket_index1 = f1 / m_pocketSize;
+    unsigned long pocket_index2 = f2 / m_pocketSize;
+    unsigned long bit_index1 = f1 % m_pocketSize;
+    unsigned long bit_index2 = f2 % m_pocketSize;
+    return (m_tickBook[pocket_index1] & (1 << bit_index1))
+      && (m_tickBook[pocket_index2] & (1 << bit_index2));
 }
 
 
@@ -114,10 +122,14 @@ bool BloomFilter::exist(const Key& key) {
 void BloomFilter::del(const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
-
-    unsigned long f1 = hash1(key);
-    unsigned long f2 = hash2(key);
-    
-    m_tickBook[f1/m_pockets] = 0;
-    m_tickBook[f2/m_pockets] = 0;
+    unsigned long f1 = hash1(key) % m_length;
+    unsigned long f2 = hash2(key) % m_length;
+    unsigned long pocket_index1 = f1 / m_pocketSize;
+    unsigned long pocket_index2 = f2 / m_pocketSize;
+    unsigned long bit_index1 = f1 % m_pocketSize;
+    unsigned long bit_index2 = f2 % m_pocketSize;
+    m_tickBook[pocket_index1] = m_tickBook[pocket_index1] 
+      ^ (1 << bit_index1);
+    m_tickBook[pocket_index2] = m_tickBook[pocket_index2]
+      ^ (1 << bit_index2);
 }

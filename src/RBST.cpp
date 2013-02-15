@@ -83,10 +83,6 @@ int RBST::dump(RBSTNode* target, char sep) {
 
 RBSTNode*  RBST::rightRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
-  /* RBSTNode *left = left(target);
-  target->setLeft(right(target));
-  left->setRight(target);
-  return left;*/
   RBSTNode *left = target -> left();
   left -> right() -> setLeft(target);
   target -> setRight(left);
@@ -95,10 +91,6 @@ RBSTNode*  RBST::rightRotate(RBSTNode* target) {
 
 RBSTNode*  RBST::leftRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
-  /*  RBSTNode *right = right(target);
-  target->setRight(left(right));
-  right->setLeft(target);*/
-  //  return target;
   RBSTNode *right = target -> right();
   right -> left() -> setRight(target);
   target -> setLeft(right);
@@ -127,16 +119,19 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
+    if (target == NULL) {
+      return new RBSTNode(key);
+    }
     srand(time(NULL));
     int r = rand() % ((m_size) + 1);
-    if(r == 0) {
+    if (r == 1) {
       return addRoot(target, key);
     } 
 
     if (*target < key) {
-      return addRoot(target -> right(), key);
+      return target->setRight(randomAdd(target->right(), key));
     } else {
-      return addRoot(target -> left(), key);
+      return target->setLeft(randomAdd(target->left(), key));
     }
 };
 
@@ -170,28 +165,61 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
   countDelete++;
   ////////////// Write your code below  ////////////////////////
-  
   if (target == NULL) {
     return NULL;
   }
-
   if (*target == key) {
-    return deleteNode(target);
+     return deleteNode(target);
   }
-
   if (*target < key) {
-    RBSTNode* right = del(target -> right(), key);
-    target -> setRight(right);
-    return right;
+    RBSTNode* right = del(target->right(), key);
+    target->setRight(right);
   } else {
-    RBSTNode* left = del(target -> left(), key);
-    target -> setLeft(left);
-    return left;
+    RBSTNode* left = del(target->left(), key);
+    target->setLeft(left);
   }  
+  return target;
 };
 
-RBSTNode* RBST:: deleteNode(RBSTNode* target, const Key& key) {
-  if(target == NULL) {
+
+RBSTNode* RBST:: deleteNode(RBSTNode* target) {
+  if (target->right() == NULL && target->left() == NULL) {
+    delete target;
     return NULL;
+  }
+  else if (target->right() == NULL) {
+    RBSTNode* left = target -> left();
+    delete target;
+    return left;
+  }
+  else if (target->left() == NULL) {
+    RBSTNode* right = target -> right();
+    delete target;
+    return right;
+  }
+  else {
+    RBSTNode *replacementNode = findLeftMost(target->right());
+    RBSTNode *newRight = deleteLeftMost(target->right());
+    replacementNode->setRight(newRight);
+    replacementNode->setLeft(target->left());
+    delete target;
+    return replacementNode;
+  }
+}
+
+RBSTNode* RBST:: findLeftMost(RBSTNode* node) {
+  if (node->left() == NULL) {
+    return node;
+  }
+  else return findLeftMost(node->left());
+}
+
+RBSTNode* RBST:: deleteLeftMost(RBSTNode* node) {
+  if (node->left() == NULL) {
+    return node->right();
+  } else {
+    RBSTNode *newChild = deleteLeftMost(node->left());
+    node->setLeft(newChild);
+    return node;
   }
 }

@@ -71,7 +71,9 @@ private:
   RBSTNode* addRoot(RBSTNode* target, const Key& key);
   RBSTNode*  rightRotate(RBSTNode* target);
   RBSTNode*  leftRotate(RBSTNode* target);
-  
+  RBSTNode* deleteNode(RBSTNode* target);
+  RBSTNode* findLeftMost(RBSTNode* node);
+  RBSTNode* deleteLeftMost(RBSTNode* node);
   RBSTNode* del(RBSTNode* target, const Key& key);
   
   RBSTNode* find(RBSTNode* target, const Key& key);
