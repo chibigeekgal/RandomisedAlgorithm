@@ -98,41 +98,41 @@ void SkipList::dump(char sep) {
 /////////////////////////////////////////////////////////////
 
 unsigned int SkipList::randHeight() {
-  int height;
-
-  /* initialize random seed. */
-  srand(time(NULL));
-  
-  /* generate random height. */
-  height = rand() % (m_maxHeight) + 1;
-
+  unsigned int height = 0;
+  int t = rand();
+  int j = 2;
+  for (height = 1; height < m_maxHeight; height++) {
+    if (t > (RAND_MAX / j)) {
+      break;
+    }
+    j = j * 2;
+  }
   return height;
-
 }
 
 
 int SkipList::add(SkipListNode* target, SkipListNode* newNode, unsigned int level) {
     if (target->nextAtLevel(level) != NULL &&
-            (*target->nextAtLevel(level)) < *newNode) {
-        countAdd++;
+        (*target->nextAtLevel(level)) < *newNode) {
+      countAdd++;
     }
     ////////////// Write your code below  ///////////////////////
-    if (*target == *newNode) {
-      return 0;
-    }
     SkipListNode *next = target->nextAtLevel(level);
+    if (next != NULL && *next == *newNode) {
+      return false;
+    }
     if (next == NULL || *next > *newNode) {
       if (level < newNode->height()) {
-	newNode->setNextAtLevel(level, next);
-	target->setNextAtLevel(level, newNode);
+        newNode->setNextAtLevel(level, next);
+        target->setNextAtLevel(level, newNode);
       }
       if (level > 0) {
-	add(target, newNode, level - 1);
+        return add(target, newNode, level - 1);
+      } else {
+        return true;
       }
-      return 1;
-    } else {
-      return add(next, newNode, level);
     }
+    return add(next, newNode, level);
 }
 
 /////////////////////////////////////////////////////////////
@@ -164,44 +164,21 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
     countFind++;
   }
   ////////////// Write your code below  ////////////////////////
-  if (target == NULL)
-    return NULL;
-  SkipListNode *curr = target->nextAtLevel(level); 
-  if(curr == NULL || key < *curr) {
-    if (level == 0)
-      return NULL;
-    return del(target, key, level - 1);
-  }
 
-  if(*curr == key) {
-    target->setNextAtLevel(level, curr->nextAtLevel(level));
-    if (level == 0)
-      return curr;
-    return del(target, key, level - 1);
-    //return curr;
-  }  
-  return del(curr, key, level);
+  SkipListNode *next = target->nextAtLevel(level); 
   
-  //return target;
-
-
-
-
-  /*
-  SkipListNode *next = target->nextAtLevel(level);
-  if (next == NULL) {
-    return NULL;
-  } 
-  if (*next == key) {
+  if(next != NULL && *next == key) {
     target->setNextAtLevel(level, next->nextAtLevel(level));
+    if (level > 0) {
+      return del(target, key, level - 1);
+    } else {
+      return next;
+    }
+  } else if(next == NULL || key < *next) {
+    if (level == 0) {
+      return NULL;
+    }
     return del(target, key, level - 1);
-  } else if (*next == key && level == 0) {
-    return next;
   }
-  if (next == NULL || *next > key) {
-    return del(target, key, level -1);
-  } else {
-    return del(next, key, level);
-  }
-  */
+  return del(next, key, level);
 }

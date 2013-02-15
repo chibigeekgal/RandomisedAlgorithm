@@ -13,7 +13,7 @@ using namespace std;
 class RBSTNode;
 class RBSTNode: public Key {
 public:
-    RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL) { }
+  RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL) { height = 1; }
     virtual ~RBSTNode() {}
 
     string getKey() {
@@ -34,17 +34,28 @@ public:
 
     RBSTNode* setLeft (RBSTNode* left) {
         m_left = left;
+        recalculate_height(); 
         return this;
     }
     RBSTNode* setRight (RBSTNode* right) {
         m_right =right;
+        recalculate_height(); 
         return this;
     }
-
+  void recalculate_height () {
+    int left_height = m_left == NULL ? 0 : m_left->height;
+    int right_height = m_right == NULL ? 0 : m_right->height; 
+    height = 1 + max(left_height, right_height);
+  }
+  int getHeight () {
+    return height; 
+  }
+  
 private:
     RBSTNode() {}
     RBSTNode* m_left;
     RBSTNode* m_right;
+    unsigned int height;
 };
 
 
@@ -75,7 +86,6 @@ private:
   RBSTNode* findLeftMost(RBSTNode* node);
   RBSTNode* deleteLeftMost(RBSTNode* node);
   RBSTNode* del(RBSTNode* target, const Key& key);
-  
   RBSTNode* find(RBSTNode* target, const Key& key);
   
   RBSTNode* m_head;
