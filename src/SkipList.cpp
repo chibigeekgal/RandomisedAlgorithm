@@ -161,7 +161,7 @@ SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int 
 /////////////////////////////////////////////////////////////
 SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int level) {
   if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
-    countFind++;
+    countDelete++;
   }
   ////////////// Write your code below  ////////////////////////
 

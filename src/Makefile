@@ -15,4 +15,3 @@ RBST.o: RBST.cpp RBST.hpp
 
 clean:
 	rm -f *.o
-	rm -f *.ps
