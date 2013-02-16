@@ -204,6 +204,7 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     RBSTNode* left = del(target->left(), key);
     target->setLeft(left);
   }  
+  m_size--;
   return target;
   
 };

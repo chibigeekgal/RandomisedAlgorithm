@@ -15,8 +15,7 @@
 
 \maketitle
 \section*{Randomised Algorithms}
-The below figures indicates the changes in time/number of executions in proportional to the size of the words added into the set for three different randomised algorithms: Skip List, Bloom Filter and Randomised BST. The observed trend for time complexity for Skip List and Bloom Filter all follows the similar pattern, which is predicted to be O(log n). \\
-We have generated some graphs to demonstrate this trend. This is done by using the provided analyse program, and provide relevant numbers such as numbers to repeat and number of words to add. Two graphs are generated this way, one is for Set Size and Counter Value, which is the number of times that a function is called. The Counter Value is incremented at the beginning of the functions to be recorded. The second graph is for Set Size and Mean Execution Time, this is calculated by operating on the same set of data each time, and repeating this operating several times would give a more accurate result. When we were testing, we tested the set size of 500, and repeated this process 5000 times to ensure the accurancy of the result.
+The below figures indicates the changes in time/number of executions in proportional to the size of the words added into the set for three different randomised algorithms: Skip List, Bloom Filter and Randomised BST. The observed trend for time complexity for Skip List and Bloom Filter all follows the similar pattern, which is predicted to be O(log n).
 \section*{Add}
 \begin{figure}[ht]
 \centering
@@ -29,10 +28,11 @@ We have generated some graphs to demonstrate this trend. This is done by using t
 \caption{addtimer}
 \end{figure}
 \subsection*{Skip List}
-Skip List add function uses randomization
-generate new j-link element then search to find a position for the new element
-and link it in as we move down to each level. The time complexity as shown in figure 2, is proportional to the size of the skip list and is bounded by the height of the skip list so thus O(log n). In other words, as there is more words added into the list, the time it takes to add each word becomes relatively less.
-
+Skip List's add function uses randomization generate new j-link element then search to find a position for the new element and link it in as we move down to each level. The time complexity as shown in figure 2, is proportional to the size of the skip list and is bounded by the height of the skip list so thus O(log n). In other words, as there is more words added into the list, the time it takes to add each word becomes relatively less.
+\subsection*{Bloom Filter}
+Bloom Filter ueses two hash functions to determin where a key should be stored in a certain bit of a pocket. No matter how big the size grows, the time complexity would not be affected since it does not involve searching for right position but mathematical calculations. This is why it's always a constant. 
+\subsection*{RBST}
+RBST randomly alternates between tail insert algorithm and root insert algorithm. 
 \section{Delete}
 \begin{figure}[ht]
 \centering
