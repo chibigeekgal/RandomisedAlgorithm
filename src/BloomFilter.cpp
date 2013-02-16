@@ -80,6 +80,8 @@ void BloomFilter::dump() {
 /////////////////////  ADD FUNCTIONS ////////////////////////
 /////////////////////////////////////////////////////////////
 
+/* Apply the two hash method on the key, then change the two
+   corresponding bits in the m_tickBook to 1. */
 void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
@@ -100,7 +102,9 @@ void BloomFilter::add(const Key& key) {
 /////////////////////  FIND FUNCTIONS ///////////////////////
 /////////////////////////////////////////////////////////////
 
-
+/* Check the two corresponding bits of the hashed key to see if they
+   equal to 1. If both of them equal to 1, then the element exists in
+   the BloomFilter, otherwise not. */
 bool BloomFilter::exist(const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
@@ -119,6 +123,7 @@ bool BloomFilter::exist(const Key& key) {
 /////////////////////  DEL FUNCTIONS ////////////////////////
 /////////////////////////////////////////////////////////////
 
+/* Change the corresponding bits of the hashed key to 0.*/
 void BloomFilter::del(const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////

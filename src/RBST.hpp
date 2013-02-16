@@ -42,6 +42,10 @@ public:
         recalculate_size(); 
         return this;
     }
+
+  /* Calculate the size of the node, called everytime one of the
+     child of the node changes, e.g. when setLeft and setRight is
+     called.  */
   void recalculate_size () {
     int left_size = m_left == NULL ? 0 : m_left->size;
     int right_size = m_right == NULL ? 0 : m_right->size; 
@@ -55,7 +59,8 @@ private:
     RBSTNode() {}
     RBSTNode* m_left;
     RBSTNode* m_right;
-    unsigned int size;
+    unsigned int size; //The number of elements that extends the
+		       //current node 
 };
 
 

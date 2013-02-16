@@ -81,6 +81,9 @@ int RBST::dump(RBSTNode* target, char sep) {
 /////////////////////  ADD FUNCTIONS ////////////////////////
 /////////////////////////////////////////////////////////////
 
+/* Set the current node's right child to be left child of the current
+   node's left child, set the current node to be the right child of
+   current node's left child.  */
 RBSTNode*  RBST::rightRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
   RBSTNode *left = target -> left();
@@ -89,6 +92,9 @@ RBSTNode*  RBST::rightRotate(RBSTNode* target) {
   return left;
 };
 
+/* Set the current node's left child to be the right child of the
+   current node's right child, set the current node to be left child
+   of the current node's left child.  */
 RBSTNode*  RBST::leftRotate(RBSTNode* target) {
   ////////////// Write your code below  ////////////////////////
   RBSTNode *right = target -> right();
@@ -97,6 +103,9 @@ RBSTNode*  RBST::leftRotate(RBSTNode* target) {
   return right;
 };
 
+/* Insert the key at target by recursively going down the tree until
+   the child of a leaf. E.g. NULL, then a new node containing key is
+   returned. */
 RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
   countAdd++;
   ////////////// Write your code below  ////////////////////////
@@ -114,7 +123,12 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
   }
 };
 
-
+/* Choose a random position from target and its extended subtrees to
+   insert from. If the target is chosen, then the key is inserted at
+   target, otherwise compare the value of target and the
+   key. If key is bigger than target then the whole process is
+   repeated on the left node, if it's smaller, then the whole process
+   is repeated on the right node.  */
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
@@ -138,6 +152,11 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
 /////////////////////  FIND FUNCTIONS ///////////////////////
 /////////////////////////////////////////////////////////////
 
+/* If target's key is equal to the key, then the target is
+   returned. If target's key is small than the key then the process
+   is done on the right child of the target, otherwise the process is
+   done on the left child of th target. If the target is NULL then
+   the element does not exist in the tree, NULL is returned. */
 RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
   countFind++;
   ////////////// Write your code below  ////////////////////////
@@ -162,7 +181,12 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 /////////////////////  DEL FUNCTIONS ////////////////////////
 /////////////////////////////////////////////////////////////
 
-
+/* If target is NULL then the key does not exist in the tree, so NULL
+   is returned. Otherwise, if target is smaller than the key, then
+   the process is repeated on the right child of target, if target is
+   bigger than the key, then the process is repeated on the left
+   child of target. If target is equal to the key, then perform
+   deleteNode on target. */
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
   countDelete++;
   ////////////// Write your code below  ////////////////////////
@@ -184,7 +208,15 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
   
 };
 
-
+/* This auxilliary method returns the appropriate node once target is
+   deleted. If target is a leaf then NULL is repeated. If left is
+   NULL but right is not, then right is returned. If left is not NULL
+   but right is then left is returned. If target has both children,
+   then the left most node of the right child is taken from its
+   position and moved up to be the replacementNode. The right child of
+   the replacementNode is the right child of target, the left child
+   of the replacementNode is the left child of target. Target is then
+   deleted.  */
 RBSTNode* RBST:: deleteNode(RBSTNode* target) {
   if (target->right() == NULL && target->left() == NULL) {
     delete target;
